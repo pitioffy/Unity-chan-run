@@ -42,7 +42,7 @@ public class CameraController2 : MonoBehaviour {
                 // Aniamtion at the start of the game
                 transform.position = Vector3.Lerp(moveVector + animationOffset, moveVector, transition);
                 transition += Time.deltaTime * 1 / animationDuration;
-                transform.LookAt(player.transform.position + Vector3.up * 2);
+                transform.LookAt(player.transform.position + Vector3.up);
             }
         }
         else

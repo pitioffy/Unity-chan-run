@@ -15,6 +15,7 @@ public class PlayerController3 : MonoBehaviour
     private float InputH;
     private float InputV;
     private bool jump;
+    private float mousePosition;
 
     [SerializeField]
     private float jumpStartTimeCount = 0f;
@@ -89,7 +90,9 @@ public class PlayerController3 : MonoBehaviour
             jumpEndTimeCount++;
             if (jumpEndTimeCount * Time.deltaTime > 0.1f)
             {
-                if (Input.GetKey(KeyCode.Space)) jump = true;
+                mousePosition = (Input.mousePosition.x - Screen.width / 2) / Screen.width * 2;
+                if (Input.GetKey(KeyCode.Space) || (Input.GetMouseButton(0) && (mousePosition > -0.3 && mousePosition < 0.3)))
+                    jump = true;
                 if (jump == true)
                 {
                     jumpStartTimeCount++;
@@ -114,17 +117,21 @@ public class PlayerController3 : MonoBehaviour
         InputH = Input.GetAxis("Horizontal");
         if (Input.GetMouseButton(0))
         {
-            # region 1. Fix speed movement
-            // Are we holding tough on the roght side?
-            /*if (Input.mousePosition.x > Screen.width / 2)
-                InputH = 0.7f;
-            else
-                InputH = -0.7f;*/
-            #endregion
+            mousePosition = (Input.mousePosition.x - Screen.width / 2) / Screen.width * 2;
+            if (mousePosition < -0.3 || mousePosition > 0.3)
+            {
+                #region 1. Fix speed movement
+                // Are we holding tough on the roght side?
+                /*if (Input.mousePosition.x > Screen.width / 2)
+                    InputH = 0.7f;
+                else
+                    InputH = -0.7f;*/
+                #endregion
 
-            #region 2. Vary speed movement
-            InputH = (Input.mousePosition.x - Screen.width / 2) / Screen.width * 2;
-            #endregion
+                #region 2. Vary speed movement
+                InputH = mousePosition;
+                #endregion
+            }
         }
         InputV = 1f;
 
@@ -171,5 +178,10 @@ public class PlayerController3 : MonoBehaviour
     private void Death()
     {
         isDead = true;
+    }
+
+    public void Jump()
+    {
+        jump = true;
     }
 }
